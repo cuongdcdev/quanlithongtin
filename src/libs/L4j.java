@@ -5,10 +5,6 @@
  */
 package libs;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import org.apache.log4j.*;
 import org.apache.log4j.Logger;
 
@@ -18,7 +14,7 @@ import org.apache.log4j.Logger;
  */
 public class L4j {
 
-    private static final Logger logger = Logger.getLogger(L4j.class);
+    private static final Logger logger = Logger.getLogger( L4j.class.getName() ); // chỉ log lỗi cho class L4j này ! 
     private static boolean isDebug = true;
     
     
@@ -26,21 +22,13 @@ public class L4j {
         this.isDebug = isDebug;
         System.out.println("L4j , app debug set to : " + this.isDebug );
     }
-    public L4j(){
+    public L4j(String path){
+            System.out.println("Path="+path);
+            loadConfig(path);
     }
-    public void loadConfig(String path) throws IOException {
-        Properties prop = new Properties();
-        InputStream in = null;
-        try {
-            in = new FileInputStream(path);
-            prop.load(in);
-
-        } catch (IOException e) {
-            BasicConfigurator.configure();
-            logger.error("cannot open L4j.properties file , so use default config ! , this log file in <app_root>/L4j.properties !  ");
-        } finally {
-            in.close();
-        }
+    
+    public void loadConfig(String path) {
+        PropertyConfigurator.configure(path);
     }
     
     public void log(String type, String mess) {
@@ -62,5 +50,10 @@ public class L4j {
                 logger.info(mess);
         }
     };
+    
+    public void log(String mess){
+        System.out.println(mess);
+        logger.error(mess);
+    }
     
 }

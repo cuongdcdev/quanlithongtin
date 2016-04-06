@@ -1,0 +1,1 @@
+[line] libs.DBManager.query(DBManager.java:112) - 2016-04-06 10:13:59,060 -  com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'quanlithongtin.thong_tinxx' doesn't exist

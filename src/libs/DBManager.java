@@ -12,10 +12,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import org.apache.log4j.Logger;
 import snaq.db.ConnectionPool;
 
 /**
@@ -30,7 +30,9 @@ public class DBManager {
     private final String hosturl;
     public final String username;
     private final String password;
-    private final Connection conn ;
+    private final Connection conn;
+    private Logger logger = Logger.getLogger(DBManager.class.getName());
+
     public DBManager(String configFileName) throws SQLException {
         data = new ArrayList<>();
         dbconfig.loadConfig(configFileName);
@@ -90,6 +92,7 @@ public class DBManager {
             String url = dbconfig.getConfig("db_url");
             conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
+            logger.error(e);
             System.out.println("Error cannot connection to database ! ");
             e.printStackTrace();
         }
@@ -106,6 +109,7 @@ public class DBManager {
             pstmt = conn.prepareStatement(s);
             rs = pstmt.executeQuery();
         } catch (SQLException e) {
+            logger.error(e);
             System.out.println("Error query : " + e);
             e.printStackTrace();
         }
@@ -128,6 +132,7 @@ public class DBManager {
             }
             rs = pstmt.executeQuery();
         } catch (SQLException e) {
+            logger.error(e);
             System.out.println("Error query : " + e);
             e.printStackTrace();
         }
@@ -145,6 +150,7 @@ public class DBManager {
             }
             pstmt.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e);
             isUpdated = false;
             System.out.println("Error update database : " + e);
             System.out.println("Queried string :  " + s + "with paras : " + paras);
@@ -168,7 +174,7 @@ public class DBManager {
             System.out.println("print preparedstatement : " + pstmt);
         } catch (SQLException e) {
             isUpdated = false;
-
+            logger.error(e);
             System.out.println("Error update database : " + e);
             System.out.println("Error delete id :  " + id + " on table : " + table);
             e.printStackTrace();
@@ -187,7 +193,7 @@ public class DBManager {
             System.out.println("print preparedstatement : " + pstmt);
         } catch (SQLException e) {
             isUpdated = false;
-
+            logger.error(e);
             System.out.println("Error update database : " + e);
             System.out.println("Error delete id :  " + id + " on table : " + table);
             e.printStackTrace();
@@ -209,6 +215,7 @@ public class DBManager {
             }
             pstmt.executeBatch();
         } catch (SQLException e) {
+            logger.error(e);
             isUpdated = false;
             System.out.println("Error  batch delete : " + e);
             e.printStackTrace();
@@ -229,6 +236,7 @@ public class DBManager {
                 rs.close();
             }
         } catch (SQLException e) {
+            logger.error(e);
             System.out.println("Error sql exception : " + e);
         }
     }
@@ -249,6 +257,7 @@ public class DBManager {
             };
             System.out.println("all data is imported ! ");
         } catch (IOException e) {
+            logger.error(e);
             System.out.println("DBManager IOException errors : " + e);
         }
         System.out.println("data size : " + data.size());
@@ -269,15 +278,8 @@ public class DBManager {
 
     //in ra tat ca list object 
     public void printList() {
-
         for (int i = 0; i < this.data.size(); i++) {
             data.get(i).printAll();
         }
     }
-
-//    public static void main(String[] args) {
-//        DBManager db = new DBManager("dbconfig");
-//        System.out.println("dbminpool : " + db.username);
-//    }
-
 }//db manager

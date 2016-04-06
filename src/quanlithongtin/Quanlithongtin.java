@@ -5,7 +5,6 @@
  */
 package quanlithongtin;
 
-import java.awt.Window;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,19 +14,16 @@ import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import libs.*;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -45,7 +41,9 @@ public class Quanlithongtin extends javax.swing.JPanel {
     private List<Field> data = new ArrayList<>();
     private long totalField = 0;
     private JLabel jlabel = new JLabel();
-
+    private MyConfig myConfig = new MyConfig();
+    
+    private Logger logger = Logger.getLogger( Quanlithongtin.class.getName() );
     /**
      * Creates new form main_view
      */
@@ -74,10 +72,11 @@ public class Quanlithongtin extends javax.swing.JPanel {
         refresh();
     }
 
-    public void refresh() throws SQLException {
+    public void refresh(){
         //lay danh sach field tu db ra :
         TableManager.removeAll(mainTable);
-        ResultSet rs = dbmanager.query("SELECT * FROM thong_tin ");
+        ResultSet rs = dbmanager.query("SELECT * FROM thong_tinxx ");
+       try{
         while (rs.next()) {
             Field f = new Field(
                     rs.getString(1), //id
@@ -90,6 +89,9 @@ public class Quanlithongtin extends javax.swing.JPanel {
             data.add(f);
         }
         System.out.println("total field : " + this.totalField);
+       }catch(SQLException ex){
+           logger.error(ex);
+       }
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
@@ -896,7 +898,7 @@ public class Quanlithongtin extends javax.swing.JPanel {
                     currentSqlId = lastSqlId.getInt(1) + 1;
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Quanlithongtin.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error("Count id from thong_tin error : " + ex.toString());
             }
 
             Field currentField = new Field(Integer.toString(currentSqlId), numberField, sendToField, now, contentField);

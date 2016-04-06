@@ -16,18 +16,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TableManager {
 
-//    public static DefaultTableModel tableModel = null;
-//    public static JTable mainTable = null;
-
-//    public TableManager(JTable table) {
-//        TableManager.mainTable = table;
-//        table.setModel(TableManager.tableModel);
-//        //cho phep chon nhieu row 1 luc 
-//        table.setRowSelectionAllowed(true);
-//        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//        //getSelectedRowsId();
-//    }
-
     public static void addRow(DefaultTableModel table, Field currentField) {
         table.addRow(new Object[]{currentField.getMenuId(), currentField.getPhone(),
             currentField.getTime(), currentField.getContent()});

@@ -52,10 +52,4 @@ import java.io.*;
      public String getBaseConfigFolder(){
          return this.baseConfigFolder;
      }
-     
-     public static void main(String[] args) {
-         MyConfig mc = new MyConfig();
-         System.out.println("baseconfig :  " + mc.getConfig("BASE_CONFIG_FOLDER"));
-     }
-     
 }
