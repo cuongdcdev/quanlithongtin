@@ -75,7 +75,7 @@ public class Quanlithongtin extends javax.swing.JPanel {
     public void refresh(){
         //lay danh sach field tu db ra :
         TableManager.removeAll(mainTable);
-        ResultSet rs = dbmanager.query("SELECT * FROM thong_tinxx ");
+        ResultSet rs = dbmanager.query("SELECT * FROM thong_tin ");
        try{
         while (rs.next()) {
             Field f = new Field(
@@ -921,7 +921,7 @@ public class Quanlithongtin extends javax.swing.JPanel {
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileFilter(new FileNameExtensionFilter("import text log file ( .txt ) ", "txt"));
         filechooser.showDialog(label1, "open");
-        if (filechooser != null) {
+        if (filechooser != null && filechooser.getSelectedFile() != null ) {
             filepath = filechooser.getSelectedFile().getAbsolutePath();
             isFileSelected = true;
             System.out.println("clicked,  importFileMouseClicked , file path : " + filepath);
